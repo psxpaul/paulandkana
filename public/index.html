@@ -11,7 +11,7 @@
             $.getJSON("/comments", function(data) {
                 $.each(data, function(i, item) {
                     $("<input class='commentAuthor' readonly='readonly' />").val(item.author).appendTo(commentsDiv);
-                    $("<textarea class='commentText' rows='5' cols='50' readonly='readonly' />").val(item.text).appendTo(commentsDiv);
+                    $("<textarea class='commentText' rows='5' cols='100' readonly='readonly' />").val(item.text).appendTo(commentsDiv);
                 });
             });
 
