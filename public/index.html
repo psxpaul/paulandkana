@@ -5,8 +5,9 @@
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            var commentsDiv = $("#comments");
+        function populateComments() {
+            var commentsDiv = $("#comments").empty();
+            $("input[type=text],textarea").val("");
 
             $.getJSON("/comments", function(data) {
                 $.each(data, function(i, item) {
@@ -14,9 +15,30 @@
                     $("<textarea class='commentText' rows='5' cols='100' readonly='readonly' />").val(item.text).appendTo(commentsDiv);
                 });
             });
+        }
 
-            $("form").submit(function () {
-                location.reload();
+        $(document).ready(function() {
+            populateComments();
+
+            $("#newCommentForm").submit(function(e) {
+                var comment = {};
+                e.preventDefault();
+                $("input[type=submit]").blur();
+                var commentError = $("#commentError").empty();
+
+                $.each($(this).serializeArray(), function (i, item) {
+                    comment[item.name] = item.value;
+                });
+
+                $.post("/comment", comment, function(data) {
+                    console.dir(data);
+                    populateComments();
+                }).error(function(jqxhr) {
+                    commentError.text("Error: " + jqxhr.responseText);
+                });
+            });
+
+            $("#authenticationForm").submit(function(e) {
             });
         });
     </script>
@@ -24,8 +46,9 @@
   <body>
     <div id="comments"></div>
 
-    <div id="newCommentForm"> New comment form:
-      <form method="post" enctype="multipart/form-data" action="/comment" target="postFrame">
+    <div id="newComment">New comment form:
+      <span id="commentError" style="color:red;"></span>
+      <form id="newCommentForm" method="post" enctype="multipart/form-data" action="/comment" target="postFrame">
           <label for="author">Author: </label>
           <input type="text" name="author"/>
           <br/>
@@ -35,6 +58,16 @@
           <textarea rows="5" cols="100" name="text"></textarea>
           <br/>
           <input type="submit"/>
+      </form>
+    </div>
+
+    <br/><br/><br/><br/>
+
+    <div id="authentication">
+      <form id="authenticationForm" method="post" enctype="multipart/form-data" action="/authenticate" target="postFrame">
+          <label for="authKey">Invitation Code: </label>
+          <input type="text" name="authKey"/>
+          <input type="submit" value="RSVP"/>
       </form>
     </div>
 

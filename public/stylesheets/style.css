@@ -1,5 +1,5 @@
 body {
-  padding: 50px;
+  /* padding: 50px; */
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -18,7 +18,7 @@ textarea.commentText {
   margin-bottom: 3em;
 }
 
-#newCommentForm {
+#newComment {
   clear: both;
   padding-top: 10em;
 }
