@@ -1,0 +1,28 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+input.commentAuthor {
+  float: left;
+  clear: both;
+}
+
+textarea.commentText {
+  float: left;
+  clear: both;
+  margin-bottom: 3em;
+}
+
+#newCommentForm {
+  clear: both;
+  padding-top: 10em;
+}
+
+iframe[name=postFrame] {
+  display: none;
+}

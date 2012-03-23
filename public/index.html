@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>See comments/Post a comment here</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" />
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var commentsDiv = $("#comments");
+
+            $.getJSON("/comments", function(data) {
+                $.each(data, function(i, item) {
+                    $("<input class='commentAuthor' readonly='readonly' />").val(item.author).appendTo(commentsDiv);
+                    $("<textarea class='commentText' rows='5' cols='50' readonly='readonly' />").val(item.text).appendTo(commentsDiv);
+                });
+            });
+
+            $("form").submit(function () {
+                location.reload();
+            });
+        });
+    </script>
+  </head>
+  <body>
+    <div id="comments"></div>
+
+    <div id="newCommentForm"> New comment form:
+      <form method="post" enctype="multipart/form-data" action="/comment" target="postFrame">
+          <label for="author">Author: </label>
+          <input type="text" name="author"/>
+          <br/>
+
+          <label for="text">Content: </label>
+          <br/>
+          <textarea rows="5" cols="100" name="text"></textarea>
+          <br/>
+          <input type="submit"/>
+      </form>
+    </div>
+
+    <iframe name="postFrame"></iframe>
+  </body>
+</html>
