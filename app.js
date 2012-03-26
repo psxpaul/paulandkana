@@ -1,10 +1,13 @@
 // Module dependencies.
 var express = require("express"),
     app = module.exports = express.createServer(),
-    Comment = require("./Comment");
+    Comment = require("./Comment"),
+    Guest = require("./Guest"),
+    bannedIpMap = {};
 
 app.configure(function () {
     app.use(express.bodyParser());
+    app.use(express.cookieParser());
     app.use(express["static"](__dirname + "/public"));
 });
 
@@ -60,6 +63,42 @@ app.post("/comment", function (req, res, next) {
             }
         });
     }
+});
+
+function authenticate(key, ipAddress, success, failure) {
+    var numTried = bannedIpMap[ipAddress] || 0;
+
+    if (numTried > 4) {
+        console.log("skipping request from " + ipAddress + " because its failed " + numTried + " times.");
+        key = "BAD_KEY";
+    }
+
+    Guest.authenticate(key, function (error, result) {
+        if (error || !result) {
+            bannedIpMap[ipAddress] = numTried + 1;
+            failure();
+        } else {
+            success(result);
+        }
+    });
+}
+
+app.post("/authenticate", function (req, res, next) {
+    authenticate(req.body.key, req.connection.remoteAddress, function (guest) {
+        res.cookie("authentication", guest.key, {expires: new Date("12-12-2012")});
+        res.json(guest);
+    }, function () {
+        res.send(404);
+    });
+});
+
+app.get("/whoami", function (req, res, next) {
+    var key = req.cookies.authentication;
+    authenticate(key, req.connection.remoteAddress, function (guest) {
+        res.json(guest);
+    }, function () {
+        res.send(404);
+    });
 });
 
 app.listen(3000);

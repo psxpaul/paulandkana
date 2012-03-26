@@ -4,41 +4,109 @@
     <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" />
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.cookie.js"></script>
     <script type="text/javascript">
         function populateComments() {
             var commentsDiv = $("#comments").empty();
             $("input[type=text],textarea").val("");
 
-            $.getJSON("/comments", function(data) {
-                $.each(data, function(i, item) {
-                    $("<input class='commentAuthor' readonly='readonly' />").val(item.author).appendTo(commentsDiv);
-                    $("<textarea class='commentText' rows='5' cols='100' readonly='readonly' />").val(item.text).appendTo(commentsDiv);
-                });
+            $.ajax({
+                url: "/comments",
+                type: "GET",
+                cache: false,
+                success: function(data) {
+                    $.each(data, function(i, item) {
+                        $("<input class='commentAuthor' readonly='readonly' />").val(item.author).appendTo(commentsDiv);
+                        $("<textarea class='commentText' rows='5' cols='100' readonly='readonly' />").val(item.text).appendTo(commentsDiv);
+                    });
+                }
             });
         }
 
+        function showForGuest(guest) {
+            var usersName = guest.nameTwo ? guest.nameOne + " " + guest.nameTwo : guest.nameOne;
+
+            $("#authentication").hide();
+            $("#authenticated").show();
+
+            $("#greeting").text("Hello " + usersName + "! You may now RSVP for our wedding! Sooo....");
+        }
+
         $(document).ready(function() {
+            var user;
             populateComments();
 
-            $("#newCommentForm").submit(function(e) {
-                var comment = {};
-                e.preventDefault();
-                $("input[type=submit]").blur();
-                var commentError = $("#commentError").empty();
-
-                $.each($(this).serializeArray(), function (i, item) {
-                    comment[item.name] = item.value;
+            if($.cookie("authentication")) {
+                $.ajax({
+                    url: "/whoami",
+                    type: "GET",
+                    cache: false,
+                    success: showForGuest
                 });
+            } else {
+                $("#authenticated").hide();
+                $("#authentication").show();
+            }
 
-                $.post("/comment", comment, function(data) {
-                    console.dir(data);
-                    populateComments();
-                }).error(function(jqxhr) {
-                    commentError.text("Error: " + jqxhr.responseText);
+            $("#newCommentForm").submit(function(e) {
+                e.preventDefault();
+                $("#commentSubmit").blur();
+                $("#commentError").empty();
+
+                $.ajax({
+                    url: "/comment",
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: populateComments,
+                    error: function(jqxhr, textStatus, errorThrown) {
+                      $("#commentError").text("Error: " + jqxhr.responseText);
+                      }
                 });
             });
 
             $("#authenticationForm").submit(function(e) {
+                e.preventDefault();
+                $("#authenticationSubmit").blur();
+                $("#authenticationError").empty();
+
+                $.ajax({
+                    url: "/authenticate",  
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: showForGuest,
+                    error: function(jqxhr) {
+                        $("#authenticationError").text("Error: " + jqxhr.responseText);
+                    }
+                });
+
+                return false;
+            });
+
+            $("#rsvpForm").submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: "/rsvp",
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        console.log("RSVPed:");
+                        console.dir(data);
+                    },
+                    error: function(jqxhr) {
+                        console.log("error RSVPing: " + jqxhr.responseText);
+                    }
+                });
+
+                return false;
+            });
+
+            $("#deauthenticate").unbind("click").click(function(e) {
+                e.preventDefault();
+                $.cookie("authentication", null);
+                $("#authenticated").hide();
+                $("#authentication").show();
+                return false;
             });
         });
     </script>
@@ -57,18 +125,43 @@
           <br/>
           <textarea rows="5" cols="100" name="text"></textarea>
           <br/>
-          <input type="submit"/>
+          <input id="commentSubmit" type="submit"/>
       </form>
     </div>
 
     <br/><br/><br/><br/>
 
     <div id="authentication">
+      <span id="authenticationError" style="color:red;"></span>
       <form id="authenticationForm" method="post" enctype="multipart/form-data" action="/authenticate" target="postFrame">
-          <label for="authKey">Invitation Code: </label>
-          <input type="text" name="authKey"/>
-          <input type="submit" value="RSVP"/>
+        <label for="authenticationInput">Invitation Code: </label>
+        <input id="authenticationInput" type="text" name="key"/>
+        <input id="authenticationSubmit" type="submit" value="RSVP"/>
       </form>
+    </div>
+
+    <div id="authenticated">
+      <span id="greeting"></span>
+      <form id="rsvpForm" method="post" enctype="multipart/form-data" action="/rsvp" target="postFrame">
+        <span>Are You coming?</span>
+        <br/>
+
+        <input type="radio" id="comingYes" name="coming" value="yes"/>
+        <label for="comingYes">Yes</label>
+        <br/>
+
+        <input type="radio" id="comingYesPlusOne" name="coming" value="yesPlusOne"/>
+        <label for="comingYesPlusOne">Yes, plus one!</label>
+        <br/>
+
+        <input type="radio" id="comingNo" name="coming" value="no"/>
+        <label for="comingNo">No</label>
+        <br/>
+
+        <input type="submit" value="RSVP" />
+      </form>
+
+      <br/><a id="deauthenticate" href="#">This is not me!</a>
     </div>
 
     <iframe name="postFrame"></iframe>

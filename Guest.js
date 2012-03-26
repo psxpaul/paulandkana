@@ -4,9 +4,9 @@ var MongoDb = require("mongodb"),
 
 db.open(function (err, db) {});
 
-exports.authenticate = function (id, callback) {
+exports.authenticate = function (key, callback) {
     db.collection("guests", function (error, collection) {
-        collection.findOne({_id: new ObjectID(id)}, callback);
+        collection.findOne({key: key}, callback);
     });
 };
 
