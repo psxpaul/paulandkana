@@ -10,9 +10,9 @@ exports.authenticate = function (key, callback) {
     });
 };
 
-exports.rsvp = function (coming, plusOne, callback) {
-    var criteria = {_id: new ObjectID(input._id) },
-        update = {$set: {coming: coming, plusOne: plusOne}},
+exports.rsvp = function (key, rsvpValue, callback) {
+    var criteria = {key: key },
+        update = {$push: {"rsvpChanges": rsvpValue}},
         options = {"new": true, "upsert": false};
 
     db.collection("guests", function (error, collection) {

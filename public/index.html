@@ -24,16 +24,20 @@
         }
 
         function showForGuest(guest) {
-            var usersName = guest.nameTwo ? guest.nameOne + " " + guest.nameTwo : guest.nameOne;
+            var usersName = guest.nameTwo ? guest.nameOne + " and " + guest.nameTwo : guest.nameOne;
 
+            $("#rsvpd").hide();
             $("#authentication").hide();
             $("#authenticated").show();
-
             $("#greeting").text("Hello " + usersName + "! You may now RSVP for our wedding! Sooo....");
+
+            if (guest.rsvpChanges && guest.rsvpChanges.length) {
+                $("#rsvpd").show();
+                $("#authenticated").hide();
+            }
         }
 
         $(document).ready(function() {
-            var user;
             populateComments();
 
             if($.cookie("authentication")) {
@@ -44,12 +48,12 @@
                     success: showForGuest
                 });
             } else {
+                $("#rsvpd").hide();
                 $("#authenticated").hide();
                 $("#authentication").show();
             }
 
-            $("#newCommentForm").submit(function(e) {
-                e.preventDefault();
+            $("#newCommentForm").submit(function() {
                 $("#commentSubmit").blur();
                 $("#commentError").empty();
 
@@ -64,8 +68,7 @@
                 });
             });
 
-            $("#authenticationForm").submit(function(e) {
-                e.preventDefault();
+            $("#authenticationForm").submit(function() {
                 $("#authenticationSubmit").blur();
                 $("#authenticationError").empty();
 
@@ -78,34 +81,40 @@
                         $("#authenticationError").text("Error: " + jqxhr.responseText);
                     }
                 });
-
-                return false;
             });
 
-            $("#rsvpForm").submit(function(e) {
-                e.preventDefault();
+            $("#rsvpForm").submit(function() {
+                $("#rsvpSubmit").attr("disabled", "disabled").blur();
 
                 $.ajax({
                     url: "/rsvp",
                     type: "POST",
                     data: $(this).serialize(),
                     success: function(data) {
-                        console.log("RSVPed:");
-                        console.dir(data);
+                        $("#rsvpd").show();
+                        $("#authenticated").hide();
+                        $("#authentication").hide();
                     },
                     error: function(jqxhr) {
                         console.log("error RSVPing: " + jqxhr.responseText);
                     }
                 });
+            });
 
+            $("#deauthenticate").click(function() {
+                $.cookie("authentication", null);
+                $("#rsvpd").hide();
+                $("#authenticated").hide();
+                $("#authenticationInput").val("");
+                $("#authentication").show();
                 return false;
             });
 
-            $("#deauthenticate").unbind("click").click(function(e) {
-                e.preventDefault();
-                $.cookie("authentication", null);
-                $("#authenticated").hide();
-                $("#authentication").show();
+            $("#unrsvp").click(function() {
+                $("#rsvpd").hide();
+                $("#authenticated").show();
+                $("#authentication").hide();
+                $("#rsvpSubmit").removeAttr("disabled");
                 return false;
             });
         });
@@ -116,7 +125,7 @@
 
     <div id="newComment">New comment form:
       <span id="commentError" style="color:red;"></span>
-      <form id="newCommentForm" method="post" enctype="multipart/form-data" action="/comment" target="postFrame">
+      <form id="newCommentForm" method="post" enctype="multipart/form-data" action="#" target="postFrame">
           <label for="author">Author: </label>
           <input type="text" name="author"/>
           <br/>
@@ -133,7 +142,7 @@
 
     <div id="authentication">
       <span id="authenticationError" style="color:red;"></span>
-      <form id="authenticationForm" method="post" enctype="multipart/form-data" action="/authenticate" target="postFrame">
+      <form id="authenticationForm" method="post" enctype="multipart/form-data" action="#" target="postFrame">
         <label for="authenticationInput">Invitation Code: </label>
         <input id="authenticationInput" type="text" name="key"/>
         <input id="authenticationSubmit" type="submit" value="RSVP"/>
@@ -142,7 +151,7 @@
 
     <div id="authenticated">
       <span id="greeting"></span>
-      <form id="rsvpForm" method="post" enctype="multipart/form-data" action="/rsvp" target="postFrame">
+      <form id="rsvpForm" method="post" enctype="multipart/form-data" action="#" target="postFrame">
         <span>Are You coming?</span>
         <br/>
 
@@ -158,10 +167,14 @@
         <label for="comingNo">No</label>
         <br/>
 
-        <input type="submit" value="RSVP" />
+        <input id="rsvpSubmit" type="submit" value="RSVP" />
       </form>
 
       <br/><a id="deauthenticate" href="#">This is not me!</a>
+    </div>
+
+    <div id="rsvpd">
+      <span>Thank you for RSVPing! If you would like to change your status, please click <a id="unrsvp" href="#">here</a></span>
     </div>
 
     <iframe name="postFrame"></iframe>

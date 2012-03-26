@@ -70,6 +70,7 @@ function authenticate(key, ipAddress, success, failure) {
 
     if (numTried > 4) {
         console.log("skipping request from " + ipAddress + " because its failed " + numTried + " times.");
+        console.dir(bannedIpMap);
         key = "BAD_KEY";
     }
 
@@ -99,6 +100,34 @@ app.get("/whoami", function (req, res, next) {
     }, function () {
         res.send(404);
     });
+});
+
+app.post("/rsvp", function (req, res, next) {
+    var authKey = req.cookies.authentication,
+        numTried = bannedIpMap[req.connection.remoteAddress] || 0,
+        rsvpValue = req.body.coming;
+
+    console.dir(req.body);
+    console.log("rsvping: " + rsvpValue + " with key " + authKey);
+
+    if (rsvpValue !== "no" && rsvpValue !== "yes" && rsvpValue !== "yesPlusOne") {
+        res.json("Invalid selection: " + rsvpValue, 400);
+    } else {
+        if (numTried > 4) {
+            console.log("skipping request from " + ipAddress + " because its failed " + numTried + " times.");
+            console.dir(bannedIpMap);
+            authKey = "BAD_KEY";
+        }
+
+        Guest.rsvp(authKey, rsvpValue, function (error, result) {
+            if (error || !result) {
+                bannedIpMap[ipAddress] = numTried + 1;
+                res.send(404);
+            } else {
+                res.json(result, 200);
+            }
+        });
+    }
 });
 
 app.listen(3000);
