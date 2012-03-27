@@ -71,18 +71,17 @@ function authenticate(key, ipAddress, success, failure) {
 
     if (numTried > 4) {
         console.log("skipping request from " + ipAddress + " because its failed " + numTried + " times.");
-        console.dir(bannedIpMap);
-        key = "BAD_KEY";
+        failure("You have specified an incorrect invitation code too many times. Please contact psxpaul@gmail.com for assistance.");
+    } else {
+        Guest.authenticate(key, function (error, result) {
+            if (error || !result) {
+                bannedIpMap[ipAddress] = numTried + 1;
+                failure("You have specified an incorrect invitation code. You have " + (4 - numTried) + " attempts remaining.");
+            } else {
+                success(result);
+            }
+        });
     }
-
-    Guest.authenticate(key, function (error, result) {
-        if (error || !result) {
-            bannedIpMap[ipAddress] = numTried + 1;
-            failure();
-        } else {
-            success(result);
-        }
-    });
 }
 
 app.post("/authenticate", function (req, res, next) {
@@ -91,8 +90,8 @@ app.post("/authenticate", function (req, res, next) {
     authenticate(req.body.key, ip, function (guest) {
         res.cookie("authentication", guest.key, {expires: new Date("12-12-2012")});
         res.json(guest);
-    }, function () {
-        res.send(404);
+    }, function (msg) {
+        res.json(msg, 404);
     });
 });
 
@@ -102,8 +101,8 @@ app.get("/whoami", function (req, res, next) {
 
     authenticate(key, ip, function (guest) {
         res.json(guest);
-    }, function () {
-        res.send(404);
+    }, function (msg) {
+        res.json(msg, 404);
     });
 });
 
@@ -117,13 +116,10 @@ app.post("/rsvp", function (req, res, next) {
 
     if (rsvpValue !== "no" && rsvpValue !== "yes" && rsvpValue !== "yesPlusOne") {
         res.json("Invalid selection: " + rsvpValue, 400);
+    } else if (numTried > 4) {
+        console.log("skipping request from " + ipAddress + " because its failed " + numTried + " times.");
+        res.json("You have specified an incorrect invitation code too many times. Please contact psxpaul@gmail.com for assistance.", 404);
     } else {
-        if (numTried > 4) {
-            console.log("skipping request from " + ipAddress + " because its failed " + numTried + " times.");
-            console.dir(bannedIpMap);
-            authKey = "BAD_KEY";
-        }
-
         Guest.rsvp(authKey, rsvpValue, function (error, result) {
             if (error || !result) {
                 bannedIpMap[ipAddress] = numTried + 1;
