@@ -67,6 +67,7 @@ app.post("/comment", function (req, res, next) {
 
 function authenticate(key, ipAddress, success, failure) {
     var numTried = bannedIpMap[ipAddress] || 0;
+    console.log("auth request from: " + ipAddress);
 
     if (numTried > 4) {
         console.log("skipping request from " + ipAddress + " because its failed " + numTried + " times.");
@@ -85,7 +86,9 @@ function authenticate(key, ipAddress, success, failure) {
 }
 
 app.post("/authenticate", function (req, res, next) {
-    authenticate(req.body.key, req.connection.remoteAddress, function (guest) {
+    var ip = req.header("X-Forwarded-For") || req.connection.remoteAddress;
+
+    authenticate(req.body.key, ip, function (guest) {
         res.cookie("authentication", guest.key, {expires: new Date("12-12-2012")});
         res.json(guest);
     }, function () {
@@ -94,8 +97,10 @@ app.post("/authenticate", function (req, res, next) {
 });
 
 app.get("/whoami", function (req, res, next) {
-    var key = req.cookies.authentication;
-    authenticate(key, req.connection.remoteAddress, function (guest) {
+    var key = req.cookies.authentication,
+        ip = req.header("X-Forwarded-For") || req.connection.remoteAddress;
+
+    authenticate(key, ip, function (guest) {
         res.json(guest);
     }, function () {
         res.send(404);
@@ -104,10 +109,10 @@ app.get("/whoami", function (req, res, next) {
 
 app.post("/rsvp", function (req, res, next) {
     var authKey = req.cookies.authentication,
-        numTried = bannedIpMap[req.connection.remoteAddress] || 0,
+        ipAddress = req.header("X-Forwarded-For") || req.connection.remoteAddress,
+        numTried = bannedIpMap[ipAddress],
         rsvpValue = req.body.coming;
 
-    console.dir(req.body);
     console.log("rsvping: " + rsvpValue + " with key " + authKey);
 
     if (rsvpValue !== "no" && rsvpValue !== "yes" && rsvpValue !== "yesPlusOne") {
