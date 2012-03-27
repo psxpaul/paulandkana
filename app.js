@@ -123,7 +123,7 @@ app.post("/rsvp", function (req, res, next) {
         Guest.rsvp(authKey, rsvpValue, function (error, result) {
             if (error || !result) {
                 bannedIpMap[ipAddress] = numTried + 1;
-                res.send(404);
+                res.json("You have specified an incorrect invitation code. You have " + (4 - numTried) + " attempts remaining.", 404);
             } else {
                 res.json(result, 200);
             }
