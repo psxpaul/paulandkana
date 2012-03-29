@@ -5,6 +5,8 @@
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/javascripts/slideshow.js"></script>
+
     <script type="text/javascript">
         function populateComments() {
             var commentsDiv = $("#comments").empty();
@@ -37,20 +39,35 @@
             }
         }
 
+        function showForAnonymous() {
+            $("#rsvpd").hide();
+            $("#authenticated").hide();
+            $("#authentication").show();
+            $("#authenticationInput").val("");
+        }
+
         $(document).ready(function() {
             populateComments();
+
+            SlideShow({
+                parent: $("#slideshow"),
+                images: [
+                    "/images/slideshow_1.jpg",
+                    "/images/slideshow_2.jpg",
+                    "/images/slideshow_3.jpg"
+                ]
+            });
 
             if($.cookie("authentication")) {
                 $.ajax({
                     url: "/whoami",
                     type: "GET",
                     cache: false,
+                    failure: showForAnonymous,
                     success: showForGuest
                 });
             } else {
-                $("#rsvpd").hide();
-                $("#authenticated").hide();
-                $("#authentication").show();
+                showForAnonymous();
             }
 
             $("#newCommentForm").submit(function() {
@@ -103,10 +120,7 @@
 
             $("#deauthenticate").click(function() {
                 $.cookie("authentication", null);
-                $("#rsvpd").hide();
-                $("#authenticated").hide();
-                $("#authenticationInput").val("");
-                $("#authentication").show();
+                showForAnonymous();
                 return false;
             });
 
@@ -176,6 +190,8 @@
     <div id="rsvpd">
       <span>Thank you for RSVPing! If you would like to change your status, please click <a id="unrsvp" href="#">here</a></span>
     </div>
+
+    <div id="slideshow"></div>
 
     <iframe name="postFrame"></iframe>
   </body>
