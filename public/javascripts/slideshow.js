@@ -1,29 +1,20 @@
 var SlideShow = function (opts) {
-    var parent = opts.parent,
+    var parent = opts.parent.css("position", "relative"),
         imageUrls = opts.images;
 
     cycleImage = function () {
-        var next = $(this).next();
-
-        if (next.length === 0) {
-            next = $(this).siblings().first();
+        if ($(this).next().length === 0) {
+            $(this).fadeOut(500).siblings().first().fadeIn(500);
+        } else {
+            $(this).fadeOut(500).next().fadeIn(500);
         }
-
-        $(this).fadeOut(500);
-        next.fadeIn(500);
     };
 
     $.each(imageUrls, function (i, val) {
-        var img = $("<img src='" + val + "'/>").appendTo(parent).click(cycleImage).css("position", "absolute");
-
-        if (i !== 0) {
-            //img.hide();
-            img.css(img.prev().offset());
-        }
+        $("<img src='" + val + "' style='position:absolute; top:0px; left:0px;'/>").appendTo(parent).click(cycleImage);
     });
 
-    setInterval(function() {
+    setInterval(function () {
         $("img:visible").click();
     }, 5000);
-
 };

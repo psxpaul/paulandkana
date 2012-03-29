@@ -49,15 +49,6 @@
         $(document).ready(function() {
             populateComments();
 
-            SlideShow({
-                parent: $("#slideshow"),
-                images: [
-                    "/images/slideshow_1.jpg",
-                    "/images/slideshow_2.jpg",
-                    "/images/slideshow_3.jpg"
-                ]
-            });
-
             if($.cookie("authentication")) {
                 $.ajax({
                     url: "/whoami",
@@ -91,8 +82,10 @@
 
                 $.ajax({
                     url: "/authenticate",  
+                    contentType: "text/plain",
                     type: "POST",
-                    data: $(this).serialize(),
+                    processData: false,
+                    data: $(this).find("input[type=text]").val(),
                     success: showForGuest,
                     error: function(jqxhr) {
                         $("#authenticationError").text("Error: " + jqxhr.responseText);
@@ -130,6 +123,15 @@
                 $("#authentication").hide();
                 $("#rsvpSubmit").removeAttr("disabled");
                 return false;
+            });
+
+            SlideShow({
+                parent: $("#slideshow"),
+                images: [
+                    "/images/slideshow_1.jpg",
+                    "/images/slideshow_2.jpg",
+                    "/images/slideshow_3.jpg"
+                ]
             });
         });
     </script>

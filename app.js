@@ -6,6 +6,23 @@ var express = require("express"),
     bannedIpMap = {};
 
 app.configure(function () {
+    express.bodyParser.parse["text/plain"] = function (req, options, fn) {
+        var buf = "";
+        req.setEncoding("utf8");
+        req.on("data", function (chunk) {
+            buf += chunk;
+        });
+
+        req.on("end", function () {
+            try {
+                req.body = buf;
+                fn();
+            } catch (err) {
+                fn(err);
+            }
+        });
+    };
+
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express["static"](__dirname + "/public"));
