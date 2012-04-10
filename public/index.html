@@ -54,7 +54,7 @@
                     url: "/whoami",
                     type: "GET",
                     cache: false,
-                    failure: showForAnonymous,
+                    error: showForAnonymous,
                     success: showForGuest
                 });
             } else {
@@ -137,6 +137,8 @@
     </script>
   </head>
   <body>
+    <div id="slideshow"></div>
+
     <div id="comments"></div>
 
     <div id="newComment">New comment form:
@@ -192,8 +194,6 @@
     <div id="rsvpd">
       <span>Thank you for RSVPing! If you would like to change your status, please click <a id="unrsvp" href="#">here</a></span>
     </div>
-
-    <div id="slideshow"></div>
 
     <iframe name="postFrame"></iframe>
   </body>

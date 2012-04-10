@@ -1,5 +1,5 @@
 var SlideShow = function (opts) {
-    var parent = opts.parent.css("position", "relative"),
+    var parent = opts.parent, //.css("position", "relative"),
         imageUrls = opts.images;
 
     cycleImage = function () {
@@ -11,8 +11,13 @@ var SlideShow = function (opts) {
     };
 
     $.each(imageUrls, function (i, val) {
-        $("<img src='" + val + "' style='position:absolute; top:0px; left:0px;'/>").appendTo(parent).click(cycleImage);
+        $("<img class='slideshow-img' src='" + val + "' style='position:absolute; top:0px; left:0px; z-index: -5;'/>").appendTo(parent).click(cycleImage);
     });
+
+    $(window).resize(function () {
+        var newWidth = $("body").width();
+        $(".slideshow-img").width(newWidth);
+    }).resize();
 
     setInterval(function () {
         $("img:visible").click();
