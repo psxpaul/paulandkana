@@ -28,22 +28,23 @@
         function showForGuest(guest) {
             var usersName = guest.nameTwo ? guest.nameOne + " and " + guest.nameTwo : guest.nameOne;
 
-            $("#rsvpd").hide();
-            $("#authentication").hide();
-            $("#authenticated").show();
+            $("a[href=#rsvpdTab]").hide();
+            $("a[href=#authenticationTab]").hide();
+            $("a[href=#authenticatedTab]").show();
+
             $("#greeting").text("Hello " + usersName + "! You may now RSVP for our wedding! Sooo....");
 
             if (guest.rsvpChanges && guest.rsvpChanges.length) {
-                $("#rsvpd").show();
-                $("#authenticated").hide();
+                $("a[href=#rsvpdTab]").show();
+                $("a[href=#authenticatedTab]").hide();
             }
         }
 
         function showForAnonymous() {
-            $("#rsvpd").hide();
-            $("#authenticated").hide();
-            $("#authentication").show();
-            $("#authenticationInput").val("");
+            $("a[href=#rsvpdTab]").hide();
+            $("a[href=#authenticatedTab]").hide();
+            $("a[href=#authenticationTab]").show();
+            $("a[href=#authenticationInput]").val("");
         }
 
         $(document).ready(function() {
@@ -54,7 +55,10 @@
                     url: "/whoami",
                     type: "GET",
                     cache: false,
-                    error: showForAnonymous,
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $.cookie("authentication", null);
+                        showForAnonymous();
+                    },
                     success: showForGuest
                 });
             } else {
@@ -86,7 +90,10 @@
                     type: "POST",
                     processData: false,
                     data: $(this).find("input[type=text]").val(),
-                    success: showForGuest,
+                    success: function (data) {
+                        showForGuest(data);
+                        $("a[href=#authenticatedTab]").click();
+                    },
                     error: function(jqxhr) {
                         $("#authenticationError").text("Error: " + jqxhr.responseText);
                     }
@@ -101,9 +108,9 @@
                     type: "POST",
                     data: $(this).serialize(),
                     success: function(data) {
-                        $("#rsvpd").show();
-                        $("#authenticated").hide();
-                        $("#authentication").hide();
+                        $("#rsvpdTab").show();
+                        $("#authenticatedTab").hide();
+                        $("#authenticationTab").hide();
                     },
                     error: function(jqxhr) {
                         console.log("error RSVPing: " + jqxhr.responseText);
@@ -114,13 +121,14 @@
             $("#deauthenticate").click(function() {
                 $.cookie("authentication", null);
                 showForAnonymous();
+                $("a[href=#slideshowTab]").click();
                 return false;
             });
 
             $("#unrsvp").click(function() {
-                $("#rsvpd").hide();
-                $("#authenticated").show();
-                $("#authentication").hide();
+                $("#rsvpdTab").hide();
+                $("#authenticatedTab").show();
+                $("#authenticationTab").hide();
                 $("#rsvpSubmit").removeAttr("disabled");
                 return false;
             });
@@ -133,17 +141,37 @@
                     "/images/slideshow_3.jpg"
                 ]
             });
+
+            $("#tabList").children().click(function () {
+                $(".tab").hide();
+                $($(this).attr("href")).show();
+                $(this).addClass("buttonSelected").siblings().removeClass("buttonSelected");
+                return false;
+            }).first().click();
+
+            $("a[href=" + window.location.hash + "]").click();
         });
     </script>
   </head>
   <body>
-    <div id="slideshow"></div>
+    <div id="tabList">
+      <a class="button" href="#slideshowTab">Photos</a>
+      <a class="button" href="#commentsTab">Guest Book</a>
+      <a class="button" href="#authenticationTab">RSVP</a>
+      <a class="button" href="#rsvpdTab">RSVP</a>
+      <a class="button" href="#authenticatedTab">About the Ceremony</a>
+    </div>
 
-    <div id="comments"></div>
+    <div id="slideshowTab" class="tab">
+      <div id="slideshow"></div>
+    </div>
 
-    <div id="newComment">New comment form:
-      <span id="commentError" style="color:red;"></span>
-      <form id="newCommentForm" method="post" enctype="multipart/form-data" action="#" target="postFrame">
+    <div id="commentsTab" class="tab">
+      <div id="comments"></div>
+
+      <div id="newComment">New comment form:
+        <span id="commentError" style="color:red;"></span>
+        <form id="newCommentForm" method="" enctype="multipart/form-data" action="#" target="postFrame">
           <label for="author">Author: </label>
           <input type="text" name="author"/>
           <br/>
@@ -153,32 +181,27 @@
           <textarea rows="5" cols="100" name="text"></textarea>
           <br/>
           <input id="commentSubmit" type="submit"/>
-      </form>
+        </form>
+      </div>
     </div>
 
-    <br/><br/><br/><br/>
-
-    <div id="authentication">
+    <div id="authenticationTab" class="tab">
       <span id="authenticationError" style="color:red;"></span>
-      <form id="authenticationForm" method="post" enctype="multipart/form-data" action="#" target="postFrame">
+      <form id="authenticationForm" method="" enctype="multipart/form-data" action="#" target="postFrame">
         <label for="authenticationInput">Invitation Code: </label>
         <input id="authenticationInput" type="text" name="key"/>
         <input id="authenticationSubmit" type="submit" value="RSVP"/>
       </form>
     </div>
 
-    <div id="authenticated">
+    <div id="authenticatedTab" class="tab">
       <span id="greeting"></span>
-      <form id="rsvpForm" method="post" enctype="multipart/form-data" action="#" target="postFrame">
+      <form id="rsvpForm" method="" enctype="multipart/form-data" action="#" target="postFrame">
         <span>Are You coming?</span>
         <br/>
 
         <input type="radio" id="comingYes" name="coming" value="yes"/>
         <label for="comingYes">Yes</label>
-        <br/>
-
-        <input type="radio" id="comingYesPlusOne" name="coming" value="yesPlusOne"/>
-        <label for="comingYesPlusOne">Yes, plus one!</label>
         <br/>
 
         <input type="radio" id="comingNo" name="coming" value="no"/>
@@ -191,7 +214,7 @@
       <br/><a id="deauthenticate" href="#">This is not me!</a>
     </div>
 
-    <div id="rsvpd">
+    <div id="rsvpdTab" class="tab">
       <span>Thank you for RSVPing! If you would like to change your status, please click <a id="unrsvp" href="#">here</a></span>
     </div>
 

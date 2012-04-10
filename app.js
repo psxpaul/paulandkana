@@ -104,7 +104,7 @@ function authenticate(key, ipAddress, success, failure) {
 app.post("/authenticate", function (req, res, next) {
     var ip = req.header("X-Forwarded-For") || req.connection.remoteAddress;
 
-    authenticate(req.body.key, ip, function (guest) {
+    authenticate(req.body, ip, function (guest) {
         res.cookie("authentication", guest.key, {expires: new Date("12-12-2012")});
         res.json(guest);
     }, function (msg) {

@@ -11,7 +11,7 @@ var SlideShow = function (opts) {
     };
 
     $.each(imageUrls, function (i, val) {
-        $("<img class='slideshow-img' src='" + val + "' style='position:absolute; top:0px; left:0px; z-index: -5;'/>").appendTo(parent).click(cycleImage);
+        $("<img class='slideshow-img' src='" + val + "' style='position:absolute; top:50px; left:0px;'/>").appendTo(parent).click(cycleImage);
     });
 
     $(window).resize(function () {

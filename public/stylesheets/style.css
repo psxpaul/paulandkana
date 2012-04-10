@@ -28,3 +28,84 @@ textarea.commentText {
 iframe[name=postFrame] {
   display: none;
 }
+
+.button {
+    background-color: #222;
+    background-image: -webkit-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
+    background-image:    -moz-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
+    background-image:     -ms-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
+    background-image:      -o-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
+    background-image:         linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
+    border: 1px solid #111;
+    color: #c6c6c6;
+    cursor: pointer;
+    display: inline-block;
+    font: bold 14px/30px sans-serif;
+    height: 30px;
+    margin: 10px;
+    outline: none;
+    padding: 0 15px;
+    position: relative;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px hsla(0,0%,0%,.8);
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
+                        inset 0 1px 0 hsla(0,0%,100%,.2);
+       -moz-box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
+                        inset 0 1px 0 hsla(0,0%,100%,.2);
+            box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
+                        inset 0 1px 0 hsla(0,0%,100%,.2);
+}
+.buttonSelected,
+.button:hover,
+.button:focus {
+    background-color: #242424;
+    color: #f6f6f6;
+    -webkit-box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
+                        inset 0 1px 0 hsla(0,0%,100%,.2);
+       -moz-box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
+                        inset 0 1px 0 hsla(0,0%,100%,.2);
+            box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
+                        inset 0 1px 0 hsla(0,0%,100%,.2);
+}
+.button:after {
+    background-image: -webkit-linear-gradient(left, hsla(0,0%,0%,0), hsla(0,0%,100%,.8), hsla(0,0%,0%,0));
+    background-image:    -moz-linear-gradient(left, hsla(0,0%,0%,0), hsla(0,0%,100%,.8), hsla(0,0%,0%,0));
+    background-image:     -ms-linear-gradient(left, hsla(0,0%,0%,0), hsla(0,0%,100%,.8), hsla(0,0%,0%,0));
+    background-image:      -o-linear-gradient(left, hsla(0,0%,0%,0), hsla(0,0%,100%,.8), hsla(0,0%,0%,0));
+    background-image:         linear-gradient(left, hsla(0,0%,0%,0), hsla(0,0%,100%,.8), hsla(0,0%,0%,0));
+    background-position: 50% 0%;
+    background-size: 200% 200%;
+    content: '';
+    display: none;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.buttonSelected:after,
+.button:hover:after,
+.button:focus:after {
+    display: block;
+}
+
+.button:active {
+    background-color: #202020;
+    color: #b6b6b6;
+    -webkit-box-shadow: 0 1px 0 hsla(0,0%,100%,.1),
+                        inset 0 1px 4px hsla(0,0%,0%,.8);
+       -moz-box-shadow: 0 1px 0 hsla(0,0%,100%,.1),
+                        inset 0 1px 4px hsla(0,0%,0%,.8);
+            box-shadow: 0 1px 0 hsla(0,0%,100%,.1),
+                        inset 0 1px 4px hsla(0,0%,0%,.8);
+}
+.button:active:after {
+    display: block;
+    left: 1px;
+    opacity: .5;
+    right: 1px;
+    top: 31px;
+} 
