@@ -1,8 +1,18 @@
 body {
-  /* padding: 50px; */
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   margin: 0px;
-  overflow-x: hidden;
+  padding: 0px;
+  /* overflow-x: hidden; */
+  /* overflow: hidden;
+  background: #F5E6F5;
+  background: -moz-radial-gradient(center center, circle cover, white 0%, #F5E6F5 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,white), color-stop(100%,#F5E6F5));
+  background: -webkit-radial-gradient(center, ellipse cover, white 0%, #F5E6F5 100%);
+  background: -o-radial-gradient(center, ellipse cover, white 0%, #F5E6F5 100%);
+  background: -ms-radial-gradient(center, ellipse cover, white 0%, #F5E6F5 100%);
+  background: radial-gradient(center, ellipse cover, white 0%, #F5E6F5 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#a3d3d3',GradientType=1 );
+  height: 800px; */
 }
 
 a {
