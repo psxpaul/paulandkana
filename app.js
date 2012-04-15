@@ -25,6 +25,7 @@ app.configure(function () {
 
     app.use(express.bodyParser());
     app.use(express.cookieParser());
+    app.use(express.favicon(__dirname + "/public/favicon.ico"));
     app.use(express["static"](__dirname + "/public"));
 });
 
