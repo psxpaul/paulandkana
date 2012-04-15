@@ -1,10 +1,11 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  margin: 0px;
-  padding: 0px;
-  /* overflow-x: hidden; */
-  /* overflow: hidden;
-  background: #F5E6F5;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  color: #333333;
+  background: #efefef;
+
+  /* background: #F5E6F5;
   background: -moz-radial-gradient(center center, circle cover, white 0%, #F5E6F5 100%);
   background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,white), color-stop(100%,#F5E6F5));
   background: -webkit-radial-gradient(center, ellipse cover, white 0%, #F5E6F5 100%);
@@ -19,6 +20,51 @@ a {
   color: #00B7FF;
 }
 
+iframe {
+  display: none;
+}
+
+/* TAB LIST SECTION */
+#tabList {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  color: #999999;
+  padding-left: 1.5em;
+  background: -moz-linear-gradient(top, rgba(51, 51, 51, 0.8) 0%, rgba(34, 34, 34, 0.8) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(51, 51, 51, 0.8)), color-stop(100%,rgba(34, 34, 34, 0.8)));
+  background: -webkit-linear-gradient(top, rgba(51, 51, 51, 0.8) 0%,rgba(34, 34, 34, 0.8) 100%);
+  background: -o-linear-gradient(top, rgba(51, 51, 51, 0.8) 0%,rgba(34, 34, 34, 0.8) 100%);
+  background: -ms-linear-gradient(top, rgba(51, 51, 51, 0.8) 0%,rgba(34, 34, 34, 0.8) 100%);
+  background: linear-gradient(top, rgba(51, 51, 51, 0.8) 0%,rgba(34, 34, 34, 0.8) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc333333', endColorstr='#cc222222', GradientType=0);
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: 0px;
+}
+
+#tabList > a {
+  text-decoration: none;
+  padding: 1em;
+  display: block;
+  float: left;
+  color: #999999;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  line-height: 13px;
+}
+
+#tabList > a:hover,
+#tabList > a.tabSelected {
+  color: #FFFFFF;
+}
+
+.tab {
+  padding-top: 4em;
+}
+
+/* GUEST BOOK SECTION */
 input.commentAuthor {
   float: left;
   clear: both;
@@ -35,87 +81,110 @@ textarea.commentText {
   padding-top: 10em;
 }
 
-iframe[name=postFrame] {
-  display: none;
+/* SLIDE SHOW SECTION */
+#slideshowTab {
+	width:1024px;
+	margin:6em auto;
+	position:relative;
+	z-index:0;
 }
 
-.button {
-    background-color: #222;
-    background-image: -webkit-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
-    background-image:    -moz-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
-    background-image:     -ms-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
-    background-image:      -o-linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
-    background-image:         linear-gradient(hsla(0,0%,100%,.15), hsla(0,0%,0%,0));
-    border: 1px solid #111;
-    color: #c6c6c6;
-    cursor: pointer;
-    display: inline-block;
-    font: bold 14px/30px sans-serif;
-    height: 30px;
-    margin: 10px;
-    outline: none;
-    padding: 0 15px;
-    position: relative;
-    text-decoration: none;
-    text-shadow: 0 -1px 1px hsla(0,0%,0%,.8);
-    -webkit-border-radius: 3px;
-       -moz-border-radius: 3px;
-            border-radius: 3px;
-    -webkit-box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
-                        inset 0 1px 0 hsla(0,0%,100%,.2);
-       -moz-box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
-                        inset 0 1px 0 hsla(0,0%,100%,.2);
-            box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
-                        inset 0 1px 0 hsla(0,0%,100%,.2);
-}
-.buttonSelected,
-.button:hover,
-.button:focus {
-    background-color: #242424;
-    color: #f6f6f6;
-    -webkit-box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
-                        inset 0 1px 0 hsla(0,0%,100%,.2);
-       -moz-box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
-                        inset 0 1px 0 hsla(0,0%,100%,.2);
-            box-shadow: 0 1px 4px hsla(0,0%,0%,.4),
-                        inset 0 1px 0 hsla(0,0%,100%,.2);
-}
-.button:after {
-    background-image: -webkit-linear-gradient(left, hsla(0,0%,0%,0), hsla(0,0%,100%,.8), hsla(0,0%,0%,0));
-    background-image:    -moz-linear-gradient(left, hsla(0,0%,0%,0), hsla(0,0%,100%,.8), hsla(0,0%,0%,0));
-    background-image:     -ms-linear-gradient(left, hsla(0,0%,0%,0), hsla(0,0%,100%,.8), hsla(0,0%,0%,0));
-    background-image:      -o-linear-gradient(left, hsla(0,0%,0%,0), hsla(0,0%,100%,.8), hsla(0,0%,0%,0));
-    background-image:         linear-gradient(left, hsla(0,0%,0%,0), hsla(0,0%,100%,.8), hsla(0,0%,0%,0));
-    background-position: 50% 0%;
-    background-size: 200% 200%;
-    content: '';
-    display: none;
-    height: 1px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-.buttonSelected:after,
-.button:hover:after,
-.button:focus:after {
-    display: block;
+#frame {
+  position: absolute;
+  z-index: 0;
+  width: 1325px;
+  height: 724px;
+  top: -21px;
+  left: -145px;
 }
 
-.button:active {
-    background-color: #202020;
-    color: #b6b6b6;
-    -webkit-box-shadow: 0 1px 0 hsla(0,0%,100%,.1),
-                        inset 0 1px 4px hsla(0,0%,0%,.8);
-       -moz-box-shadow: 0 1px 0 hsla(0,0%,100%,.1),
-                        inset 0 1px 4px hsla(0,0%,0%,.8);
-            box-shadow: 0 1px 0 hsla(0,0%,100%,.1),
-                        inset 0 1px 4px hsla(0,0%,0%,.8);
+/*
+	Slideshow
+*/
+
+#slides {
+	position:absolute;
+	top:15px;
+	left:4px;
+	z-index:100;
 }
-.button:active:after {
-    display: block;
-    left: 1px;
-    opacity: .5;
-    right: 1px;
-    top: 31px;
-} 
+
+/*
+	Slides container
+	Important:
+	Set the width of your slides container
+	Set to display none, prevents content flash
+*/
+
+.slides_container {
+	width:1024px;
+	overflow:hidden;
+	position:relative;
+	display:none;
+}
+
+/*
+	Each slide
+	Important:
+	Set the width of your slides
+	If height not specified height will be set by the slide content
+	Set to display block
+*/
+
+.slides_container a {
+	width:1024px;
+	height:576px;
+	display:block;
+}
+
+.slides_container a img {
+	display:block;
+}
+
+/*
+	Next/prev buttons
+*/
+
+#slides .next,#slides .prev {
+	position:absolute;
+  top: 250px;
+  left: -50px;
+  width: 24px;
+  height: 43px;
+	display:block;
+	z-index:101;
+}
+
+#slides .next {
+	left:1050px;
+}
+
+/*
+	Pagination
+*/
+
+.pagination {
+	margin:50px auto 0;
+	width:100px;
+}
+
+.pagination li {
+	float:left;
+	margin:0 1px;
+	list-style:none;
+}
+
+.pagination li a {
+	display:block;
+	width:12px;
+	height:0;
+	padding-top:12px;
+	background-image:url(../images/pagination.png);
+	background-position:0 0;
+	float:left;
+	overflow:hidden;
+}
+
+.pagination li.current a {
+	background-position:0 -12px;
+}

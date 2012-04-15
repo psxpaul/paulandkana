@@ -1,11 +1,13 @@
 <html>
   <head>
-    <title>See comments/Post a comment here</title>
+    <title>PaulAndKana.com</title>
     <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" />
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	  <script type="text/javascript" src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
+
     <script type="text/javascript" src="/javascripts/jquery.cookie.js"></script>
-    <script type="text/javascript" src="/javascripts/slideshow.js"></script>
+	  <script type="text/javascript" src="/javascripts/slides.min.jquery.js"></script>
 
     <script type="text/javascript">
         function populateComments() {
@@ -133,21 +135,20 @@
                 return false;
             });
 
-            SlideShow({
-                parent: $("#slideshow"),
-                images: [
-                    "/images/slideshow_1.jpg",
-                    "/images/slideshow_2.jpg",
-                    "/images/slideshow_3.jpg"
-                ]
-            });
-
             $("#tabList").children().click(function () {
                 $(".tab").hide();
                 $($(this).attr("href")).show();
-                $(this).addClass("buttonSelected").siblings().removeClass("buttonSelected");
+                $(this).addClass("tabSelected").siblings().removeClass("tabSelected");
                 return false;
             }).first().click();
+
+            $('#slides').slides({
+                preload: true,
+                preloadImage: '/images/loading.gif',
+                play: 5000,
+                pause: 2500,
+                hoverPause: true
+            });
 
             $("a[href=" + window.location.hash + "]").click();
         });
@@ -155,15 +156,26 @@
   </head>
   <body>
     <div id="tabList">
-      <a class="button" href="#slideshowTab">Photos</a>
-      <a class="button" href="#commentsTab">Guest Book</a>
-      <a class="button" href="#authenticationTab">RSVP</a>
-      <a class="button" href="#rsvpdTab">RSVP</a>
-      <a class="button" href="#authenticatedTab">About the Ceremony</a>
+      <a href="#slideshowTab">Photos</a>
+      <a href="#commentsTab">Guest Book</a>
+      <a href="#authenticationTab">RSVP</a>
+      <a href="#rsvpdTab">RSVP</a>
+      <a href="#authenticatedTab">About the Ceremony</a>
+      <a href="/" style="color:#fff; font-size: 20px; font-weight: 200; line-height: 1; padding: 0.5em 1em 0 0; float: right;">PaulAndKana.com</a>
+      <!-- a href="/" style="color:#fff; float: right;">PaulAndKana.com</a -->
     </div>
 
     <div id="slideshowTab" class="tab">
-      <div id="slideshow"></div>
+			<div id="slides">
+				<div class="slides_container">
+					<a href="/images/slideshow_1.jpg" title="this is the first slide" target="_blank"><img src="/images/slideshow_1.jpg" width="1024" height="576" alt="Slide 1"></a>
+					<a href="/images/slideshow_2.jpg" title="this is the first slide" target="_blank"><img src="/images/slideshow_2.jpg" width="1024" height="576" alt="Slide 2"></a>
+					<a href="/images/slideshow_3.jpg" title="this is the first slide" target="_blank"><img src="/images/slideshow_3.jpg" width="1024" height="576" alt="Slide 3"></a>
+				</div>
+				<a href="#" class="prev"><img src="/images/arrow-prev.png" width="24" height="43" alt="Arrow Prev"></a>
+				<a href="#" class="next"><img src="/images/arrow-next.png" width="24" height="43" alt="Arrow Next"></a>
+			</div>
+			<img src="/images/example-frame.png" alt="Example Frame" id="frame">
     </div>
 
     <div id="commentsTab" class="tab">
