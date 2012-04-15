@@ -36,10 +36,46 @@ app.configure("production", function () {
     app.use(express.errorHandler());
 });
 
+function authenticate(key, ipAddress, success, failure) {
+    var numTried = bannedIpMap[ipAddress] || 0;
+    console.log("auth request from: " + ipAddress);
+
+    if (numTried > 4) {
+        console.log("skipping request from " + ipAddress + " because its failed " + numTried + " times.");
+        failure("You have specified an incorrect invitation code too many times. Please contact psxpaul@gmail.com for assistance.");
+    } else {
+        Guest.authenticate(key, function (error, result) {
+            if (error || !result) {
+                bannedIpMap[ipAddress] = numTried + 1;
+                failure("You have specified an incorrect invitation code. You have " + (4 - numTried) + " attempts remaining.");
+            } else {
+                success(result);
+            }
+        });
+    }
+}
+
 
 // Routes
+app.get("/private/:file", function (req, res) {
+    var authKey = req.cookies.authentication,
+        ip = req.header("X-Forwarded-For") || req.connection.remoteAddress;
+
+    console.log("request for: " + __dirname + "/private/" + req.params.file);
+
+    authenticate(authKey, ip, function (guest) {
+        res.sendfile(__dirname + "/private/" + req.params.file);
+    }, function (msg) {
+        console.log("oops");
+        res.json(msg, 404);
+    });
+    
+});
+
 app.get("/comments", function (req, res) {
-    Comment.findAll(function (error, results) {
+    var article = req.query.article;
+
+    Comment.findForArticle(article, function (error, results) {
         if (error) {
             res.json(error, 400);
         } else if (!results) {
@@ -82,25 +118,6 @@ app.post("/comment", function (req, res, next) {
     }
 });
 
-function authenticate(key, ipAddress, success, failure) {
-    var numTried = bannedIpMap[ipAddress] || 0;
-    console.log("auth request from: " + ipAddress);
-
-    if (numTried > 4) {
-        console.log("skipping request from " + ipAddress + " because its failed " + numTried + " times.");
-        failure("You have specified an incorrect invitation code too many times. Please contact psxpaul@gmail.com for assistance.");
-    } else {
-        Guest.authenticate(key, function (error, result) {
-            if (error || !result) {
-                bannedIpMap[ipAddress] = numTried + 1;
-                failure("You have specified an incorrect invitation code. You have " + (4 - numTried) + " attempts remaining.");
-            } else {
-                success(result);
-            }
-        });
-    }
-}
-
 app.post("/authenticate", function (req, res, next) {
     var ip = req.header("X-Forwarded-For") || req.connection.remoteAddress;
 
@@ -113,10 +130,10 @@ app.post("/authenticate", function (req, res, next) {
 });
 
 app.get("/whoami", function (req, res, next) {
-    var key = req.cookies.authentication,
+    var authKey = req.cookies.authentication,
         ip = req.header("X-Forwarded-For") || req.connection.remoteAddress;
 
-    authenticate(key, ip, function (guest) {
+    authenticate(authKey, ip, function (guest) {
         res.json(guest);
     }, function (msg) {
         res.json(msg, 404);

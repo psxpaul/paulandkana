@@ -4,9 +4,9 @@ var MongoDb = require("mongodb"),
 
 db.open(function (err, db) {});
 
-exports.findAll = function (callback) {
+exports.findForArticle = function (articleQuery, callback) {
     db.collection("comments", function (err, collection) {
-        collection.find().toArray(callback);
+        collection.find({article: articleQuery}).toArray(callback);
     });
 };
 
