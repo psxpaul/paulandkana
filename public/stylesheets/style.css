@@ -4,6 +4,7 @@ body {
   line-height: 18px;
   color: #333333;
   background: #efefef;
+  min-width: 1096px;
 
   /* background: #F5E6F5;
   background: -moz-radial-gradient(center center, circle cover, white 0%, #F5E6F5 100%);
@@ -119,8 +120,6 @@ textarea.commentText {
 .slides_container {
 	width:1024px;
 	overflow:hidden;
-	position:relative;
-	display:none;
   outline: 26px solid white;
   -webkit-box-shadow: 0px 8px 12px 27px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 8px 12px 27px rgba(0, 0, 0, 0.2);
