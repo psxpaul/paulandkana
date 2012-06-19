@@ -19,6 +19,13 @@ body {
 
 a {
   color: #00B7FF;
+  outline: none;
+  border: none;
+}
+
+img {
+  outline: none;
+  border: none;
 }
 
 iframe {
