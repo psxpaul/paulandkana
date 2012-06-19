@@ -121,6 +121,9 @@ textarea.commentText {
 	overflow:hidden;
 	position:relative;
 	display:none;
+  outline: 26px solid white;
+  -webkit-box-shadow: 0px 8px 12px 27px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 8px 12px 27px rgba(0, 0, 0, 0.2);
 }
 
 /*
