@@ -5,16 +5,6 @@ body {
   color: #333333;
   background: #efefef;
   min-width: 1096px;
-
-  /* background: #F5E6F5;
-  background: -moz-radial-gradient(center center, circle cover, white 0%, #F5E6F5 100%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,white), color-stop(100%,#F5E6F5));
-  background: -webkit-radial-gradient(center, ellipse cover, white 0%, #F5E6F5 100%);
-  background: -o-radial-gradient(center, ellipse cover, white 0%, #F5E6F5 100%);
-  background: -ms-radial-gradient(center, ellipse cover, white 0%, #F5E6F5 100%);
-  background: radial-gradient(center, ellipse cover, white 0%, #F5E6F5 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#a3d3d3',GradientType=1 );
-  height: 800px; */
 }
 
 a {
@@ -70,6 +60,16 @@ iframe {
 
 .tab {
   padding-top: 4em;
+}
+
+/* REGISTRY SECTION */
+#registryTab {
+  margin: 0em 5em;
+}
+
+#registryTab a {
+  margin-left: 3em;
+  display: block;
 }
 
 /* GUEST BOOK SECTION */
