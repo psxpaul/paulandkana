@@ -58,14 +58,27 @@ function authenticate(key, ipAddress, success, failure) {
 
 
 // Routes
-app.get("/private/:file", function (req, res) {
+app.get("/private/:path", function (req, res) {
     var authKey = req.cookies.authentication,
+        path = req.params.path,
         ip = req.header("X-Forwarded-For") || req.connection.remoteAddress;
 
     console.log("request for: " + __dirname + "/private/" + req.params.file);
 
     authenticate(authKey, ip, function (guest) {
-        res.sendfile(__dirname + "/private/" + req.params.file);
+        if (path === "rsvpList") {
+            Guest.findAll(authKey, function (error, result) {
+                if (error) {
+                    res.json(error, 400);
+                } else if (!result) {
+                    res.send(404);
+                } else {
+                    res.json(result);
+                }
+            });
+        } else {
+            res.sendfile(__dirname + "/private/" + path);
+        }
     }, function (msg) {
         console.log("oops");
         res.json(msg, 404);

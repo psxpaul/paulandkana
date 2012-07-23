@@ -19,3 +19,9 @@ exports.rsvp = function (key, rsvpValue, callback) {
         collection.findAndModify(criteria, [["_id", "asc"]], update, options, callback);
     });
 };
+
+exports.findAll = function (key, callback) {
+    db.collection("guests", function (err, collection) {
+        collection.find().toArray(callback);
+    });
+};
