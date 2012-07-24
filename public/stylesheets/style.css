@@ -30,7 +30,6 @@ input[type=text], textarea {
 
   padding: 0.4em;
   width:200px; 
-  overflow: auto;
 } 
 
 input[type=text]:focus, textarea:focus {
@@ -187,6 +186,10 @@ input[type=submit]:hover, input[type=button]:hover, button:hover {
   padding: 0;
   width: 0;
   height: 0;
+}
+
+#newComment textarea {
+  overflow: auto;
 }
 
 #newComment {
