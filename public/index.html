@@ -13,6 +13,7 @@
 	  <script type="text/javascript" src="http://gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
 
     <script type="text/javascript" src="/javascripts/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.timeago.js"></script>
 	  <script type="text/javascript" src="/javascripts/slides.min.jquery.js"></script>
 
     <script type="text/javascript">
@@ -26,8 +27,14 @@
                 cache: false,
                 success: function(data) {
                     $.each(data, function(i, item) {
-                        $("<input class='commentAuthor' readonly='readonly' />").val(item.author).appendTo(commentsDiv);
-                        $("<textarea class='commentText' rows='5' cols='100' readonly='readonly' />").val(item.text).appendTo(commentsDiv);
+                        var commentText = item.text.replace(/\n/g, "<br/>"),
+                            commentDate = new Date(item.date),
+                            commentAuthor = "Posted by " + item.author + " " + $.timeago(commentDate);
+
+                        console.log(item.date);
+
+                        $("<div class='commentAuthor' />").append(commentAuthor).appendTo(commentsDiv);
+                        $("<div class='commentText' />").append(commentText).appendTo(commentsDiv);
                     });
                 }
             });
@@ -206,7 +213,7 @@
 
           <label for="text">Content: </label>
           <br/>
-          <textarea rows="5" cols="100" name="text"></textarea>
+          <textarea class="commentText" rows="5" name="text"></textarea>
           <br/>
           <input id="commentSubmit" type="submit"/>
         </form>
