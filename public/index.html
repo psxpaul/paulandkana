@@ -31,8 +31,6 @@
                             commentDate = new Date(item.date),
                             commentAuthor = "Posted by " + item.author + " " + $.timeago(commentDate);
 
-                        console.log(item.date);
-
                         $("<div class='commentAuthor' />").append(commentAuthor).appendTo(commentsDiv);
                         $("<div class='commentText' />").append(commentText).appendTo(commentsDiv);
                     });
@@ -128,7 +126,9 @@
                         $("#authenticationTab").hide();
                     },
                     error: function(jqxhr) {
-                        console.log("error RSVPing: " + jqxhr.responseText);
+                        if (typeof console !== "undefined") {
+                            console.log("error RSVPing: " + jqxhr.responseText);
+                        }
                     }
                 });
             });
