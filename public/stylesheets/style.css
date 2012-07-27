@@ -126,13 +126,22 @@ input[type=submit]:hover, input[type=button]:hover, button:hover {
 }
 
 /* REGISTRY SECTION */
-#registryTab {
-  margin: 0em 5em;
+#registryTab > div, #registryTab > h2 {
+  margin-left: 24px;
 }
 
 #registryTab a {
-  margin-left: 3em;
+  margin-top: 2em;
+  height: 75px;
+  width: 325px;
   display: block;
+  float: left;
+}
+
+#registryTab a > div {
+  width: 250px;
+  height: 65px;
+  overflow: visible;
 }
 
 /* GUEST BOOK SECTION */
