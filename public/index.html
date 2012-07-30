@@ -27,12 +27,12 @@
                 cache: false,
                 success: function(data) {
                     $.each(data, function(i, item) {
-                        var commentText = item.text.replace(/\n/g, "<br/>"),
+                        var commentText = item.text,
                             commentDate = new Date(item.date),
                             commentAuthor = "Posted by " + item.author + " " + $.timeago(commentDate);
 
-                        $("<div class='commentAuthor' />").append(commentAuthor).appendTo(commentsDiv);
-                        $("<div class='commentText' />").append(commentText).appendTo(commentsDiv);
+                        $("<div class='commentAuthor' />").text(commentAuthor).appendTo(commentsDiv);
+                        $("<div class='commentText' />").text(commentText).appendTo(commentsDiv);
                     });
                 }
             });
@@ -78,7 +78,9 @@
                 showForAnonymous();
             }
 
-            $("#newCommentForm").submit(function() {
+            $("#newCommentForm").submit(function(e) {
+                e.preventDefault();
+
                 $("#commentSubmit").blur();
                 $("#commentError").empty();
 
@@ -93,7 +95,9 @@
                 });
             });
 
-            $("#authenticationForm").submit(function() {
+            $("#authenticationForm").submit(function(e) {
+                e.preventDefault();
+
                 $("#authenticationSubmit").blur();
                 $("#authenticationError").empty();
 
@@ -113,7 +117,9 @@
                 });
             });
 
-            $("#rsvpForm").submit(function() {
+            $("#rsvpForm").submit(function(e) {
+                e.preventDefault();
+
                 $("#rsvpSubmit").attr("disabled", "disabled").blur();
 
                 $.ajax({
@@ -155,9 +161,9 @@
                 return false;
             }).first().click();
 
-            $('#slides').slides({
+            $("#slides").slides({
                 preload: true,
-                preloadImage: '/images/loading.gif',
+                preloadImage: "/images/loading.gif",
                 play: 3000,
                 pause: 1000,
                 hoverPause: true
