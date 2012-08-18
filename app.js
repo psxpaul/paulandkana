@@ -158,13 +158,11 @@ app.post("/rsvp", function (req, res, next) {
     var authKey = req.cookies.authentication,
         ipAddress = req.header("X-Forwarded-For") || req.connection.remoteAddress,
         numTried = bannedIpMap[ipAddress],
-        rsvpValue = req.body.coming;
+        rsvpValue = req.body;
 
-    console.log("rsvping: " + rsvpValue + " with key " + authKey);
+    console.log("rsvping: " + JSON.stringify(rsvpValue) + " with key " + authKey);
 
-    if (rsvpValue !== "no" && rsvpValue !== "yes" && rsvpValue !== "yesPlusOne") {
-        res.json("Invalid selection: " + rsvpValue, 400);
-    } else if (numTried > 4) {
+    if (numTried > 4) {
         console.log("skipping request from " + ipAddress + " because its failed " + numTried + " times.");
         res.json("You have specified an incorrect invitation code too many times. Please contact psxpaul@gmail.com for assistance.", 404);
     } else {

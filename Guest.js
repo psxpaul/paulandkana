@@ -12,11 +12,17 @@ exports.authenticate = function (key, callback) {
 
 exports.rsvp = function (key, rsvpValue, callback) {
     var criteria = {key: key },
-        update = {$push: {"rsvpChanges": rsvpValue}},
+        update = {$push: {}},
         options = {"new": true, "upsert": false};
 
     db.collection("guests", function (error, collection) {
-        collection.findAndModify(criteria, [["_id", "asc"]], update, options, callback);
+        collection.findOne({key: key}, function (err, guest) {
+            Object.keys(guest.people).forEach(function (person) {
+                update.$push["people." + person] = rsvpValue[person];
+            });
+
+            collection.findAndModify(criteria, [["_id", "asc"]], update, options, callback);
+        });
     });
 };
 

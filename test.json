@@ -1,0 +1,3 @@
+db.guests.insert({"_id":"aaa11134", "key":"thisisakey", "people":{"Paul Roberts":[], "Kana Miyata":[]} });                
+db.guests.insert({"_id":"aaa11135", "key":"thisisakey3", "people":{"Paul Roberts":[], "Kana Miyata":[], "Lilly Boo":[]}});
+db.guests.insert({"_id":"aaa11136", "key":"thisisakey1", "people":{"Paul Roberts":[]}});
