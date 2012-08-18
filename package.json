@@ -4,7 +4,7 @@
     "private": true,
     "dependencies": {
       "emailjs": ">= 0.3.1",
-      "express": ">= 2.5.10",
+      "express": "3.0.0beta4",
       "mongodb": ">= 1.0.0"
     }
 }

@@ -1,28 +1,13 @@
 // Module dependencies.
 var express = require("express"),
-    app = module.exports = express.createServer(),
+    app = express(),
     Comment = require("./Comment"),
     Guest = require("./Guest"),
+    port = process.env.PORT || 3000,
     bannedIpMap = {};
 
 app.configure(function () {
-    express.bodyParser.parse["text/plain"] = function (req, options, fn) {
-        var buf = "";
-        req.setEncoding("utf8");
-        req.on("data", function (chunk) {
-            buf += chunk;
-        });
-
-        req.on("end", function () {
-            try {
-                req.body = buf;
-                fn();
-            } catch (err) {
-                fn(err);
-            }
-        });
-    };
-
+    app.set("port", port);
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.favicon(__dirname + "/public/favicon.ico"));
@@ -177,5 +162,6 @@ app.post("/rsvp", function (req, res, next) {
     }
 });
 
-app.listen(3000);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.listen(port, function () {
+    console.log("Express server listening on port %d in %s mode", port, app.settings.env);
+});
