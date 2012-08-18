@@ -1,6 +1,13 @@
 var MongoDb = require("mongodb"),
     ObjectID = MongoDb.ObjectID,
-    db = new MongoDb.Db("test", new MongoDb.Server("localhost", 27017, {auto_reconnect: true}, {}));
+    db = new MongoDb.Db("test", new MongoDb.Server("localhost", 27017, {auto_reconnect: true}, {})),
+    email   = require("./node_modules/emailjs/email"),
+    server  = email.server.connect({
+        user: "pablorobertos", 
+        password: "********",
+        host: "smtp.gmail.com",
+        ssl: true
+    });
 
 db.open(function (err, db) {});
 
@@ -21,7 +28,15 @@ exports.rsvp = function (key, rsvpValue, callback) {
                 update.$push["people." + person] = rsvpValue[person];
             });
 
-            collection.findAndModify(criteria, [["_id", "asc"]], update, options, callback);
+            collection.findAndModify(criteria, [["_id", "asc"]], update, options, function (error, result) {
+                server.send({
+                    text: "The value posted: \n\n" + JSON.stringify(rsvpValue), 
+                    from: "paulandkana.com <pablorobertos@gmail.com>", 
+                    to: "Paul Roberts <psxpaul@gmail.com>",
+                    subject: "Someone RSVP'd for your wedding!"
+                }, function (emailErr, message) { console.log(emailErr || message); });
+                callback(error, result);
+            });
         });
     });
 };
