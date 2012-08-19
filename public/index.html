@@ -81,7 +81,7 @@
             $("#greeting").text("Hello " + usersName + "! You may now RSVP for our wedding! Sooo....");
 
             _.each(_.keys(guest.people), function (person, i) {
-                var form = $("#rsvpForm").prepend(rsvpTemplate({name: person, index: i}));
+                var form = $("#rsvpForm .peopleList").append(rsvpTemplate({name: person, index: i}));
                 form.find("input[type=radio]").change(function() {
                     var t = $(this);
 
@@ -328,6 +328,7 @@
     <div id="authenticatedTab" class="tab">
       <span id="greeting"></span>
       <form id="rsvpForm" method="" enctype="multipart/form-data" action="#" target="postFrame">
+        <div class="peopleList"></div>
         <input id="rsvpSubmit" type="submit" value="RSVP" />
         <br />
         <span id="rsvpError" style="color:red;"></span>
