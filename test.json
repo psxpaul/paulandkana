@@ -1,49 +1,44 @@
-db.guests.insert({"_id":"aaa11134", "key":"thisisakey", "people":{"Paul Roberts":[], "Kana Miyata":[]} });                
-db.guests.insert({"_id":"aaa11135", "key":"thisisakey3", "people":{"Paul Roberts":[], "Kana Miyata":[], "Lilly Boo":[]}});
-db.guests.insert({"_id":"aaa11136", "key":"thisisakey1", "people":{"Paul Roberts":[]}});
-
-
-2|Mr. Alex|Dea + Guest|KUDD3D
-0|Mr. & Mrs. Apollo|Owens|5B1I52
-2|Mr. George|Yuhba + Guest|FGZ6Y4
-2|Kristin Swickard & Scott Tommela||KY6NPG
-1|Ashley|Fletcher|Y8FBEQ
-2|Joshua Solis & Luis Parra||P62WHT
-2|Mr. & Mrs. David |Ron|QSJ99H
-2|Mr. & Mrs. Adam |Banas|6R24YJ
-2|AJ Cave & Miriam Choi||HJ4OYG
-1|Mr. Patrick|Maher|YREM1Q
-2|Mr. & Mrs. Brandon|Gillaspy|FCDBK7
-2|Mr. & Mrs. Scott|Rice|GUSPI2
-2|Mr. & Mrs. Larry |Baratte|WZWRJJ
-2|Mr. James |Grey + Guest|AONFAA
-2|Mr. & Mrs. Yukihiro |Miyata|E7TEM0
-2|Mr. & Mrs. Samuel |Craig|9KOQJT
-2|Mrs. & Mrs. Royd|Nuckols|V72J1A
-2|Captain & Mrs. Richard C. |Hogan|BLZ1RP
-1|Ms. Masako |Yuki|WV8KHU
-4|Mr. & Mrs.  Richard C.|Hogan, Jr. |LH6LE7
-5|Mr. & Mrs. David |Cordova & Family|OFK31H
-2|Mr. & Mrs. Robert H.|Sterne, Jr. |1LTFUL
-2|Mr. & Mrs. Frederick E.|Wilson|727CE3
-2|Mr. & Mrs. Tetsuyasu |Uekuma|FKCRKA
-2|Mr. & Mrs. Mark|Roberts|V49VGY
-1|Ms. Ellen|Roberts|NSMERJ
-2|Ms. Iris Roberts & Tom||7L18YL
-2|Mr. & Mr. Nathan|Dunn|9VVNLD
-2|Mr. Michael (Scrut) Ullman & Carina||T3ODLE
-2|Mr. & Mrs. JJ |Wilson|OE4F66
-2|Mr. & Mrs. Kenji|Miyata|CE3PSM
-2|Mr. & Mrs. Raphael|Porter|PF0SGI
-2|Mr. Wyatt|Pitts +Guest|8NNSV0
-2|Patrick Balangue & Lisa Gray||0N0YRA
-2|Mr. & Mrs. Jim |Harbuck|WC3O5P
-2|Mr. & Mrs. Neil|Brightwell|EA7557
-2|Mr. & Mrs. Spug|Blonquist|I56GN6
-2|Alan Rivera & Hector||S2IZ14
-1|Grandma ||7KY1VQ
-1|Ms. Cristy|Smyth|NC8C0E
-2|Mr. & Mrs. Tim |Halberg|4U46AK
-2|Tom Machado & Suzanne||59EDLE
-2|Jeremy & Leslie |Vannix|FSBC27
-|Ms. Stephanie|Cruz|4016P0
+db.guests.insert({"key":"KUDD3D", "people":{"Alex Dea":[], "Guest":[]} });
+db.guests.insert({"key":"5B1I52", "people":{"Apollo Owens":[], "Angie Owens":[]} });
+db.guests.insert({"key":"FGZ6Y4", "people":{"George Yuhba":[], "Guest":[]} });
+db.guests.insert({"key":"KY6NPG", "people":{"Kristin Swickard":[], "Scott Tommela":[]} });
+db.guests.insert({"key":"Y8FBEQ", "people":{"Ashley Fletcher":[]} });
+db.guests.insert({"key":"P62WHT", "people":{"Joshua Solis":[], "Luis Parra":[]} });
+db.guests.insert({"key":"QSJ99H", "people":{"David Ron":[], "Nicole Ron":[]} });
+db.guests.insert({"key":"6R24YJ", "people":{"Adam Banas":[], "Monique Banas":[]} });
+db.guests.insert({"key":"HJ4OYG", "people":{"AJ Cave":[], "Miriam Choi":[]} });
+db.guests.insert({"key":"YREM1Q", "people":{"Patrick Maher":[]} });
+db.guests.insert({"key":"FCDBK7", "people":{"Brandon Gillaspy":[], "Eliana Caballero Gillaspy":[]} });
+db.guests.insert({"key":"GUSPI2", "people":{"Scott Rice":[], "Nance Rodriguez":[]} });
+db.guests.insert({"key":"WZWRJJ", "people":{"Larry Baratte":[], "Beth Baratte":[]} });
+db.guests.insert({"key":"AONFAA", "people":{"James Grey":[], "Guest":[]} });
+db.guests.insert({"key":"E7TEM0", "people":{"Yukihiro Miyata":[], "Sherry Miyata":[]} });
+db.guests.insert({"key":"9KOQJT", "people":{"Samuel Craig":[], "Jean Craig":[]} });
+db.guests.insert({"key":"V72J1A", "people":{"Royd Nuckols":[], "Karen Nuckols":[]} });
+db.guests.insert({"key":"BLZ1RP", "people":{"Richard Hogan":[], "Nancy Hogan":[]} });
+db.guests.insert({"key":"WV8KHU", "people":{"Masako Yuki":[]} });
+db.guests.insert({"key":"LH6LE7", "people":{"Richard Hogan Jr":[], "Maura Hogan":[], "Seamus Hogan":[], "Sean Hogan":[]} });
+db.guests.insert({"key":"OFK31H", "people":{"David Cordova":[], "Liz Cordova":[], "Andrew Cordova":[], "Ben Cordova":[], "Sarah Cordova":[]} });
+db.guests.insert({"key":"1LTFUL", "people":{"Robert H Sterne Jr":[], "Barbara Sterne":[]} });
+db.guests.insert({"key":"727CE3", "people":{"Frederick E Wilson":[], "Nancy Wilson":[]} });
+db.guests.insert({"key":"FKCRKA", "people":{"Tetsuyasu Uekuma":[], "Mrs Uekuma":[]} });
+db.guests.insert({"key":"V49VGY", "people":{"Mark Roberts":[], "Mila Roberts":[]} });
+db.guests.insert({"key":"NSMERJ", "people":{"Ellen Roberts":[]} });
+db.guests.insert({"key":"7L18YL", "people":{"Iris Roberts":[], "Tom Lippard":[]} });
+db.guests.insert({"key":"9VVNLD", "people":{"Nathan Dunn":[], "Beverly Dunn":[]} });
+db.guests.insert({"key":"T3ODLE", "people":{"Scrut Moleman":[], "Carina Cash":[]} });
+db.guests.insert({"key":"OE4F66", "people":{"JJ Wilson":[], "Natalee Wilson":[]} });
+db.guests.insert({"key":"CE3PSM", "people":{"Kenji Miyata":[], "Heather Miyata":[]} });
+db.guests.insert({"key":"PF0SGI", "people":{"Rafeal Porter":[], "Kim Porter":[]} });
+db.guests.insert({"key":"8NNSV0", "people":{"Wyatt Pitts":[], "Guest":[]} });
+db.guests.insert({"key":"0N0YRA", "people":{"Patrick Balangue":[], "Guest":[]} });
+db.guests.insert({"key":"WC3O5P", "people":{"Jim Harbuck":[], "Terri Harbuck":[]} });
+db.guests.insert({"key":"EA7557", "people":{"Neil Brightwell":[], "Nancy Brightwell":[]} });
+db.guests.insert({"key":"I56GN6", "people":{"Spug Blonquist":[], "Lynette Blonquist":[]} });
+db.guests.insert({"key":"S2IZ14", "people":{"Alan Rivera":[], "Guest":[]} });
+db.guests.insert({"key":"7KY1VQ", "people":{"Ellen Roberts":[]} });
+db.guests.insert({"key":"NC8C0E", "people":{"Cristy Smyth":[]} });
+db.guests.insert({"key":"4U46AK", "people":{"Tim Halberg":[]} });
+db.guests.insert({"key":"59EDLE", "people":{"Tom Machado":[], "Guest":[]} });
+db.guests.insert({"key":"FSBC27", "people":{"Jeremy Vannix":[], "Leslie Vannix":[]} });
+db.guests.insert({"key":"4016P0", "people":{"Stephanie Cruz":[]} });
