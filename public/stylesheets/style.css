@@ -304,3 +304,10 @@ input[type=submit]:hover, input[type=button]:hover, button:hover {
 .pagination li.current a {
 	background-position:0 -12px;
 }
+
+#rsvpForm .foodChoice, #rsvpForm .yesOrNo {
+    display: inline-block;
+    vertical-align: top;
+    width: 12em;
+    height: 5em;
+}

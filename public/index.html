@@ -18,6 +18,36 @@
 	  <script type="text/javascript" src="/javascripts/slides.min.jquery.js"></script>
 
     <script type="text/javascript">
+      var rsvpTemplate = _.template(
+          "<div class='personForm'>" +
+              "<br/>" +
+              "<span>Is <%= name %> coming?</span>" +
+              "<br/>" +
+              "<div class='yesOrNo'>" +
+                  "<input type='radio' class='comingRadio' id='comingYes<%= index %>' name='coming<%= index %>' value='yes' data-person='<%= name %>' >" +
+                  "<label for='comingYes<%= index %>'>Yes</label>" +
+                  "<br/>" +
+                  "<input type='radio' class='comingRadio' id='comingNo<%= index %>' name='coming<%= index %>' value='no' data-person='<%= name %>' >" +
+                  "<label for='comingNo<%= index %>'>No</label>" +
+              "</div>" +
+
+              "<div class='foodChoice' style='display: none;'>" +
+                  "<input type='radio' class='foodRadio' id='foodPrimerib<%= index %>' name='food<%= index %>' value='primerib' data-person='<%= name %>' checked >" +
+                  "<label for='foodPrimerib<%= index %>'>Prime Rib</label>" +
+                  "<br/>" +
+                  "<input type='radio' class='foodRadio' id='foodSalmon<%= index %>' name='food<%= index %>' value='salmon' data-person='<%= name %>' >" +
+                  "<label for='foodSalmon<%= index %>'>Salmon</label>" +
+                  "<br/>" +
+                  "<input type='radio' class='foodRadio' id='foodPasta<%= index %>' name='food<%= index %>' value='pasta' data-person='<%= name %>' >" +
+                  "<label for='foodPasta<%= index %>'>Pasta</label>" +
+              "</div>" +
+
+              "<br/>" +
+              "<input type='radio' class='comingRadio' id='comingNull<%= index %>' name='coming<%= index %>' value='' data-person='<%= name %>' checked style='display: none;' >" +
+              "<input type='radio' class='foodRadio' id='foodNull<%= index %>' name='food<%= index %>' value='' data-person='<%= name %>' checked style='display: none;' >" +
+          "</div>"
+          );
+
         function populateComments() {
             var commentsDiv = $("#comments").empty();
             $("input[type=text],textarea").val("");
@@ -51,16 +81,16 @@
             $("#greeting").text("Hello " + usersName + "! You may now RSVP for our wedding! Sooo....");
 
             _.each(_.keys(guest.people), function (person, i) {
-                $("<br/>").prependTo("#rsvpForm");
-                $("<label for='comingNo" + i + "'>No</label>").prependTo("#rsvpForm");
-                $("<input type='radio' id='comingNo" + i + "' name='coming" + i + "' value='no'/>").data("person", person).prependTo("#rsvpForm");
+                var form = $("#rsvpForm").prepend(rsvpTemplate({name: person, index: i}));
+                form.find("input[type=radio]").change(function() {
+                    var t = $(this);
 
-                $("<br/>").prependTo("#rsvpForm");
-                $("<label for='comingYes" + i + "'>Yes</label>").prependTo("#rsvpForm");
-                $("<input type='radio' id='comingYes" + i + "' name='coming" + i + "' value='yes' checked />").data("person", person).prependTo("#rsvpForm");
-
-                $("<br/>").prependTo("#rsvpForm");
-                $("<span></span>").text("Is " + person + " coming?").prependTo("#rsvpForm");
+                    if (t.val() === "yes") {
+                        t.parent().siblings(".foodChoice").show();
+                    } else if (t.val() === "no") {
+                        t.parent().siblings(".foodChoice").hide();
+                    }
+                });
             });
 
             if (alreadyRegistered) {
@@ -119,10 +149,8 @@
 
                 $.ajax({
                     url: "/authenticate",  
-                    contentType: "text/plain",
                     type: "POST",
-                    processData: false,
-                    data: $(this).find("input[type=text]").val(),
+                    data: $(this).serialize(),
                     success: function (data) {
                         showForGuest(data);
                         $("a[href=#authenticatedTab]").click();
@@ -136,15 +164,29 @@
             $("#rsvpForm").submit(function(e) {
                 e.preventDefault();
                 var form = $(this),
-                    data = {};
+                    data = {},
+                    validValues = ["no", "primerib", "salmon", "pasta"],
+                    errorFound = false;
 
-                form.find("input:checked").each(function() {
-                    data[$(this).data("person")] = $(this).val();
+                form.find("input.comingRadio:checked").each(function() {
+                    var v = $(this).val(),
+                        val = v === "yes" ? $(this).parent().siblings(".foodChoice").find("input.foodRadio:checked").val() : v,
+                        valid = $.inArray(val, validValues) !== -1;
+
+                    if (!valid) {
+                        $("#rsvpError").text("You must select if each guest is going, and any meal they will be having.");
+                        errorFound = true;
+                    }
+
+                    data[$(this).data("person")] = val;
                 });
 
-                $("rsvpError").empty();
-                $("#rsvpSubmit").attr("disabled", "disabled").blur();
+                if (errorFound) {
+                  return false;
+                }
 
+                $("#rsvpError").empty();
+                $("#rsvpSubmit").attr("disabled", "disabled").blur();
 
                 $.ajax({
                     url: "/rsvp",
@@ -169,6 +211,7 @@
             $("#deauthenticate").click(function() {
                 $.cookie("authentication", null);
                 showForAnonymous();
+                $("#rsvpForm .personForm").remove();
                 $("a[href=#slideshowTab]").click();
                 return false;
             });

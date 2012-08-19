@@ -32,9 +32,11 @@ exports.rsvp = function (key, rsvpValue, callback) {
                 server.send({
                     text: "The value posted: \n\n" + JSON.stringify(rsvpValue), 
                     from: "paulandkana.com <pablorobertos@gmail.com>", 
-                    to: "Paul Roberts <psxpaul@gmail.com>",
+                    to: "Paul Roberts <psxpaul@gmail.com>, Kana Miyata <myt.kana@gmail.com>",
                     subject: "Someone RSVP'd for your wedding!"
-                }, function (emailErr, message) { console.log(emailErr || message); });
+                }, function (emailErr, message) {
+                    console.log(emailErr || message);
+                });
                 callback(error, result);
             });
         });

@@ -118,9 +118,12 @@ app.post("/comment", function (req, res, next) {
 });
 
 app.post("/authenticate", function (req, res, next) {
-    var ip = req.header("X-Forwarded-For") || req.connection.remoteAddress;
+    var ip = req.header("X-Forwarded-For") || req.connection.remoteAddress,
+        key = req.body.key;
 
-    authenticate(req.body, ip, function (guest) {
+    console.log("Authenticating: " + key);
+
+    authenticate(key, ip, function (guest) {
         res.cookie("authentication", guest.key, {expires: new Date("12-12-2012")});
         res.json(guest);
     }, function (msg) {
