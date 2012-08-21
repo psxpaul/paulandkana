@@ -143,6 +143,7 @@
 
             $("#authenticationForm").submit(function(e) {
                 e.preventDefault();
+                var data = { key: $("#authenticationInput").val().toUpperCase() };
 
                 $("#authenticationSubmit").blur();
                 $("#authenticationError").empty();
@@ -150,7 +151,7 @@
                 $.ajax({
                     url: "/authenticate",  
                     type: "POST",
-                    data: $(this).serialize(),
+                    data: data,
                     success: function (data) {
                         showForGuest(data);
                         $("a[href=#authenticatedTab]").click();
