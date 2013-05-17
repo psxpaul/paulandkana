@@ -9,7 +9,7 @@ var MongoDb = require("mongodb"),
         ssl: true
     });
 
-Db.connect("mongodb://localhost:27017/?w=1", function (err, db) {
+Db.connect("mongodb://localhost:27017/test?w=1", function (err, db) {
     exports.authenticate = function (key, callback) {
         db.collection("guests", function (error, collection) {
             collection.findOne({key: key}, callback);

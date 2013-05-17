@@ -3,7 +3,7 @@ var MongoDb = require("mongodb"),
     Db = MongoDb.Db,
     db;
 
-Db.connect("mongodb://localhost:27017/?w=1", function (err, db) {
+Db.connect("mongodb://localhost:27017/test?w=1", function (err, db) {
     exports.findForArticle = function (articleQuery, callback) {
         db.collection("comments", function (err, collection) {
             collection.find({article: articleQuery}).toArray(callback);
