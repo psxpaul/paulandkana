@@ -1,10 +1,10 @@
 {
     "name": "paulandkana.com",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "private": true,
     "dependencies": {
       "emailjs": ">= 0.3.1",
-      "express": "3.0.0beta4",
+      "express": ">= 3.0.0",
       "mongodb": ">= 1.0.0"
     }
 }
